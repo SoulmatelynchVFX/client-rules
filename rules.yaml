@@ -8,60 +8,33 @@
 #       若 客户端 中显示不同如 Proxy，请把全文件 🔰 选择节点 替换掉）。
 
 rules:
-  # ===== 国内 App → 直连（正常网络）=====
-  # 微信
-  - DOMAIN-SUFFIX,wechat.com,DIRECT
-  - DOMAIN-SUFFIX,weixin.qq.com,DIRECT
-  - DOMAIN-SUFFIX,qq.com,DIRECT
-  - DOMAIN-SUFFIX,tencent.com,DIRECT
-  # 闲鱼 / 淘宝 / 天猫
+  # ===== 国内 App 规则集 → 直连（正常网络）=====
+  # 数据源：blackmatrix7/ios_rule_script（按 App 分类的现成域名规则集，每日随上游更新）
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeChat/WeChat.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Alibaba/Alibaba.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/AliPay/AliPay.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Baidu/Baidu.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBili/BiliBili.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/ByteDance/ByteDance.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/DouYin/DouYin.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/JingDong/JingDong.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/MeiTuan/MeiTuan.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Weibo/Weibo.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/XiaoHongShu/XiaoHongShu.list,DIRECT
+  # 闲鱼（阿里系，规则集未单列，单独补）
   - DOMAIN-SUFFIX,goofish.com,DIRECT
-  - DOMAIN-SUFFIX,taobao.com,DIRECT
-  - DOMAIN-SUFFIX,tmall.com,DIRECT
-  # 支付宝
-  - DOMAIN-SUFFIX,alipay.com,DIRECT
-  - DOMAIN-SUFFIX,alipayobjects.com,DIRECT
-  # 抖音 / 头条
-  - DOMAIN-SUFFIX,douyin.com,DIRECT
-  - DOMAIN-SUFFIX,toutiao.com,DIRECT
-  - DOMAIN-SUFFIX,bytedance.com,DIRECT
-  # 小红书
-  - DOMAIN-SUFFIX,xiaohongshu.com,DIRECT
-  - DOMAIN-SUFFIX,xhscdn.com,DIRECT
-  # 微博
-  - DOMAIN-SUFFIX,weibo.com,DIRECT
-  - DOMAIN-SUFFIX,weibocdn.com,DIRECT
-  # 百度
-  - DOMAIN-SUFFIX,baidu.com,DIRECT
-  - DOMAIN-SUFFIX,bdstatic.com,DIRECT
-  # 京东
-  - DOMAIN-SUFFIX,jd.com,DIRECT
-  - DOMAIN-SUFFIX,jd.com.cn,DIRECT
-  # 美团
-  - DOMAIN-SUFFIX,meituan.com,DIRECT
-  # 哔哩哔哩
-  - DOMAIN-SUFFIX,bilibili.com,DIRECT
-  - DOMAIN-SUFFIX,biliimg.com,DIRECT
+  - DOMAIN-SUFFIX,idlefish.com,DIRECT
 
-  # ===== 国外 AI / 软件 → 代理（经节点出口）=====
-  # OpenAI / ChatGPT
-  - DOMAIN-SUFFIX,openai.com,🔰 选择节点
-  - DOMAIN-SUFFIX,chat.openai.com,🔰 选择节点
-  - DOMAIN-SUFFIX,oaistatic.com,🔰 选择节点
-  - DOMAIN-SUFFIX,oaiusercontent.com,🔰 选择节点
-  # Google / Gemini
-  - DOMAIN-SUFFIX,gemini.google.com,🔰 选择节点
-  - DOMAIN-SUFFIX,ai.google,🔰 选择节点
-  - DOMAIN-SUFFIX,googleapis.com,🔰 选择节点
-  # Anthropic / Claude
-  - DOMAIN-SUFFIX,claude.ai,🔰 选择节点
-  - DOMAIN-SUFFIX,anthropic.com,🔰 选择节点
-  # xAI / Grok
-  - DOMAIN-SUFFIX,x.ai,🔰 选择节点
-  # Hugging Face
-  - DOMAIN-SUFFIX,huggingface.co,🔰 选择节点
+  # ===== 国外 AI / 社交 规则集 → 代理（经节点出口）=====
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Google/Google.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anthropic/Anthropic.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Claude/Claude.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Telegram/Telegram.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Twitter/Twitter.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/YouTube/YouTube.list,🔰 选择节点
 
-  # ===== 通用国内外兜底 =====
+  # ===== 通用国内外兜底（无需逐个列 App）=====
   - GEOIP,CN,DIRECT                  # 国内 IP 直连
   - DOMAIN-SUFFIX,cn,DIRECT          # .cn 域名直连
   - MATCH,🔰 选择节点                # 其余一律走代理
