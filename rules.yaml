@@ -34,6 +34,13 @@ rules:
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Twitter/Twitter.list,🔰 选择节点
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/YouTube/YouTube.list,🔰 选择节点
 
+  # ===== AI 服务补充（路径已逐一验证存在）=====
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Gemini/Gemini.list,🔰 选择节点
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Copilot/Copilot.list,🔰 选择节点
+
+  # ===== 开发工具（GitHub 经代理访问更稳定）=====
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GitHub/GitHub.list,🔰 选择节点
+
   # ===== 通用国内外兜底（无需逐个列 App）=====
   - GEOIP,CN,DIRECT                  # 国内 IP 直连
   - DOMAIN-SUFFIX,cn,DIRECT          # .cn 域名直连
