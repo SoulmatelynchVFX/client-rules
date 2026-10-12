@@ -4,12 +4,12 @@
 #   2) 在该订阅的「配置」中，把「远程规则 / Remote Rule」指向下方 raw 链接：
 #      https://raw.githubusercontent.com/SoulmatelynchVFX/client-rules/main/rules.yaml
 #   3) 规则随订阅生效；改动本文件后，在客户端刷新订阅即可
-# 注意：代理策略名必须与订阅里的分组名一致（下面用「🔰 选择节点」，
-#       若 客户端 中显示不同如 Proxy，请把全文件 🔰 选择节点 替换掉）。
+# 注意：策略名必须与本机分组名一致（此处为「🔰 选择节点」，
+#       若客户端中显示为其他名称如 Proxy，请把全文件的名称整体替换）。
 
 rules:
-  # ===== 国内 App 规则集 → 直连（正常网络）=====
-  # 数据源：blackmatrix7/ios_rule_script（按 App 分类的现成域名规则集，每日随上游更新）
+  # ===== 国内 App 规则集 → DIRECT =====
+  # 规则集来源：blackmatrix7/ios_rule_script（按 App 分类，随上游更新）
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeChat/WeChat.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Alibaba/Alibaba.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/AliPay/AliPay.list,DIRECT
@@ -25,7 +25,7 @@ rules:
   - DOMAIN-SUFFIX,goofish.com,DIRECT
   - DOMAIN-SUFFIX,idlefish.com,DIRECT
 
-  # ===== 国外 AI / 社交 规则集 → 代理（经节点出口）=====
+  # ===== 境外 App 规则集 → 代理分组 =====
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/OpenAI/OpenAI.list,🔰 选择节点
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Google/Google.list,🔰 选择节点
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anthropic/Anthropic.list,🔰 选择节点
@@ -34,14 +34,14 @@ rules:
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Twitter/Twitter.list,🔰 选择节点
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/YouTube/YouTube.list,🔰 选择节点
 
-  # ===== AI 服务补充（路径已逐一验证存在）=====
+  # ===== 补充规则集（路径已确认可用）=====
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Gemini/Gemini.list,🔰 选择节点
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Copilot/Copilot.list,🔰 选择节点
 
-  # ===== 开发工具（GitHub 经代理访问更稳定）=====
+  # ===== 开发工具 =====
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GitHub/GitHub.list,🔰 选择节点
 
-  # ===== 通用国内外兜底（无需逐个列 App）=====
-  - GEOIP,CN,DIRECT                  # 国内 IP 直连
-  - DOMAIN-SUFFIX,cn,DIRECT          # .cn 域名直连
-  - MATCH,🔰 选择节点                # 其余一律走代理
+  # ===== 兜底规则 =====
+  - GEOIP,CN,DIRECT                  # 国内 IP
+  - DOMAIN-SUFFIX,cn,DIRECT          # .cn 域名
+  - MATCH,🔰 选择节点                # 其余走代理分组

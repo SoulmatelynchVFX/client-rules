@@ -7,6 +7,8 @@
 | 文件 | 说明 |
 |---|---|
 | `rules.yaml` | 分流规则本体。按应用分类，`GEOIP,CN` / `DOMAIN-SUFFIX,cn` 兜底，`MATCH` 收尾 |
+| `scripts/validate_rules.py` | 离线结构校验：字段、重复匹配条件、规则集地址形式、末尾唯一 `MATCH` |
+| `tests/test_validate_rules.py` | 上述校验器的回归测试 |
 
 ## 引用方式
 
@@ -45,3 +47,7 @@ curl -s -o /dev/null -w '%{http_code}\n' \
 ## 结构约定
 
 分类规则集在前，`GEOIP,CN` 与 `DOMAIN-SUFFIX,cn` 兜底，`MATCH` 置于最后且只出现一次。
+
+## License
+
+MIT
