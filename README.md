@@ -24,6 +24,15 @@ https://raw.githubusercontent.com/SoulmatelynchVFX/client-rules/main/rules.yaml
 
 ## 维护说明
 
+改动后用 Python 3 跑一遍（无额外依赖）：
+
+```bash
+python scripts/validate_rules.py
+python -m unittest discover -s tests -v
+```
+
+校验器仅覆盖本仓库当前的简化列表写法，不是完整 YAML 或客户端配置校验器，不联网检查 URL，也不保证上述引用步骤在你的客户端版本可用；策略名、配置导入与实际分流仍需在设备上验证。
+
 新增规则集前先确认上游路径存在：
 
 ```bash
