@@ -39,7 +39,7 @@ python -m unittest discover -s tests -v
 
 ```bash
 curl -s -o /dev/null -w '%{http_code}\n' \
-  https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/客户端/Gemini/Gemini.list
+  https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Gemini/Gemini.list
 ```
 
 返回 `200` 才可引用（`DeepSeek`、`EpicGames` 等路径当前不存在）。
