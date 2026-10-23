@@ -1,13 +1,12 @@
-# 应用分流规则（Clash 格式，仅含 rules 段）
-# 用法：
-#   1) 先在客户端导入订阅，订阅提供节点与策略分组
-#   2) 在该订阅的「配置」中，把「远程规则 / Remote Rule」指向下方 raw 链接：
-#      https://raw.githubusercontent.com/SoulmatelynchVFX/client-rules/main/rules.yaml
-#   3) 规则随订阅生效；改动本文件后，在客户端刷新订阅即可
-# 注意：策略名必须与本机分组名一致（此处为「🔰 选择节点」，
-#       若客户端中显示为其他名称如 Proxy，请把全文件的名称整体替换）。
+# 历史规则清单（仅含 rules 段），保留用于对照与离线测试。
+# iOS Shadowrocket 请导入 shadowrocket.conf，不要把本文件当作完整配置。
+# 本清单的「🔰 选择节点」在原生配置中映射为 PROXY，MATCH 映射为 FINAL。
 
 rules:
+  # 国际版 Lark 专属域名例外；必须在 ByteDance 等公司级集合之前
+  - DOMAIN-SUFFIX,larksuite.com,🔰 选择节点
+  - DOMAIN-SUFFIX,larksuitecdn.com,🔰 选择节点
+
   # ===== 国内 App 规则集 → DIRECT =====
   # 规则集来源：blackmatrix7/ios_rule_script（按 App 分类，随上游更新）
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeChat/WeChat.list,DIRECT
@@ -17,6 +16,8 @@ rules:
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBili/BiliBili.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/ByteDance/ByteDance.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/DouYin/DouYin.list,DIRECT
+  # 斗鱼直播 → 直连
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Douyu/Douyu.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/JingDong/JingDong.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/MeiTuan/MeiTuan.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Weibo/Weibo.list,DIRECT

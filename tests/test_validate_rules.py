@@ -11,6 +11,17 @@ class ValidateRulesTest(unittest.TestCase):
     def test_comments_crlf_and_unicode_policy(self):
         self.assertEqual(validate("# comment\r\nrules:\r\n  - DOMAIN-SUFFIX,cn,DIRECT # note\r\n  - MATCH,🔰 选择节点\r\n"), [])
 
+    def test_douyu_uses_direct_before_fallbacks(self):
+        path = Path(__file__).resolve().parents[1] / "rules.yaml"
+        rules = [line.strip()[2:] for line in path.read_text(encoding="utf-8").splitlines()
+                 if line.strip().startswith("- ")]
+        url = "https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Douyu/Douyu.list"
+        matcher = f"RULE-SET,{url},"
+        self.assertEqual([rule for rule in rules if rule.startswith(matcher)], [matcher + "DIRECT"])
+        position = rules.index(matcher + "DIRECT")
+        for prefix in ("GEOIP,CN,", "DOMAIN-SUFFIX,cn,", "MATCH,"):
+            self.assertLess(position, next(index for index, rule in enumerate(rules) if rule.startswith(prefix)))
+
     def test_invalid_structures(self):
         for text in ["", "rules:\n", "rules:\n  - MATCH,Proxy\n  - GEOIP,CN,DIRECT",
                      "rules:\n  - MATCH,Proxy\n  - MATCH,Proxy",
