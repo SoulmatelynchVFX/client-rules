@@ -7,6 +7,9 @@ rules:
   - DOMAIN-SUFFIX,larksuite.com,🔰 选择节点
   - DOMAIN-SUFFIX,larksuitecdn.com,🔰 选择节点
 
+  # BiliBili 国际站例外；必须在国内 BiliBili 等直连集合之前
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBiliIntl/BiliBiliIntl.list,🔰 选择节点
+
   # ===== 国内 App 规则集 → DIRECT =====
   # 规则集来源：blackmatrix7/ios_rule_script（按 App 分类，随上游更新）
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeChat/WeChat.list,DIRECT
@@ -19,6 +22,9 @@ rules:
   # 斗鱼直播 → 直连
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Douyu/Douyu.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/JingDong/JingDong.list,DIRECT
+  # 拼多多与苏宁直连；苏宁须优先于 Google 的 gmail 关键词规则
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Pinduoduo/Pinduoduo.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/SuNing/SuNing.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/MeiTuan/MeiTuan.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Weibo/Weibo.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/XiaoHongShu/XiaoHongShu.list,DIRECT
