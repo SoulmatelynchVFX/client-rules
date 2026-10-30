@@ -9,6 +9,8 @@
 | `shadowrocket.conf` | Shadowrocket 原生配置，包含斗鱼直连；不含节点、订阅或 HTTPS 解密设置 |
 | `rules.yaml` | 历史规则清单，保留用于对照，不是完整客户端配置 |
 | `scripts/validate_rules.py` | 离线结构校验：字段、重复匹配条件、规则集地址形式、末尾唯一 `MATCH` |
+| `scripts/check_upstream.py` | 按原生配置去重并发 GET 上游规则，区分 HTTP、网络与内容检查结果 |
+| `tests/test_check_upstream.py` | 检查工具的离线网络边界、内容、命令行与并发上限测试 |
 | `tests/test_validate_rules.py` | 上述校验器的回归测试 |
 | `tests/test_shadowrocket_config.py` | 原生配置的策略、顺序和清单一致性测试 |
 | `tests/test_service_exceptions.py`、`tests/test_bilibili_routing.py` | Lark 与 BiliBili 国际站的最小上游样本分流回归，不是完整客户端引擎 |
@@ -48,6 +50,38 @@ curl -s -o /dev/null -w '%{http_code}\n' \
 ```
 
 确认返回 `200` 且内容为有效规则后再引用。
+
+## 上游联网检查
+
+Python 3 标准库工具，无需安装依赖。从完整原生配置的 `[Rule]` 中提取 `RULE-SET` 地址并去重，只发 GET，不改配置、不下载落盘、不访问规则中列出的应用域名：
+
+```bash
+python scripts/check_upstream.py
+python scripts/check_upstream.py --config shadowrocket.conf --workers 4 --timeout 15 --json
+```
+
+默认检查仓库内 `shadowrocket.conf`，与当前工作目录无关；不解析历史 `rules.yaml`。终端模式显示每个集合的状态、HTTP 状态、规则数和摘要；`--json` 输出包含 UTC 检查时间、计数、URL、HTTP 状态、响应大小及完整响应的 SHA-256，适合保存检查证据。不会输出服务器正文、代理凭据或异常原文。
+
+| 结果 | 含义 |
+| --- | --- |
+| `ok` | HTTP 200 且通过支持范围内的基本内容检查；不代表业务可用或分流正确 |
+| `not_found` | 本次 GET 返回 404/410，只说明该规则文件响应，不判定软件或整个域名失效 |
+| `access_denied` / `rate_limited` | 401/403 / 429，需要核查访问条件或限流 |
+| `redirect` / `http_error` | 重定向未跟随 / 其他非 200 响应，保留具体 HTTP 状态 |
+| `timeout` / `tls_error` / `network_error` | 超时、证书/TLS、DNS/连接/读取异常；可达性未确认，不归为死链 |
+| `invalid_content` | HTML、空列表、非 UTF-8 或支持类型的明显结构错误 |
+| `content_unverified` | 出现未支持的规则类型，需人工复核，既不报成功也不直接判非法 |
+| `too_large` | 响应超过 2 MiB，停止读取并标记未完成检查 |
+
+退出码：全部 `ok` 为 0；任一项需关注为 1；参数或输入配置错误为 2；中断为 130（正在执行的请求可能需要等待超时才能退出）。输出按配置地址顺序排列，不按请求完成顺序跳动。
+
+并发默认 4、可选 1–8；最多 256 个不同地址。超时范围 0.1–60 秒，默认 15 秒，是阻塞网络操作超时，不是整轮硬截止时间；DNS 或持续缓慢返回可能令总耗时更长。每个 URL 仅请求一次，不自动重试。最多读取 2 MiB + 1 字节判断超限。
+
+仅接受无凭据、查询参数和 fragment 的 `https://raw.githubusercontent.com/.../*.list`，不跟随重定向；保持默认 TLS 证书校验及系统代理。它是本仓库维护工具，不是任意 URL 探测器。
+
+内容检查支持 DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD、USER-AGENT、IP-CIDR、IP-CIDR6、IP6-CIDR、IP-ASN 的基础字段检查；IP-CIDR 同时接受 IPv4/IPv6，兼容当前 Shadowrocket 上游写法。支持 IP 规则的 `no-resolve`。这不是官方完整语法解析器，不验证域名归属、优先级冲突、实机下载或每个应用的真实路由。原有离线测试仍不联网；联网命令是显式独立操作。
+
+网络行为参考 [Python urllib.request 文档](https://docs.python.org/3/library/urllib.request.html) 和 [HTTPError/URLError 文档](https://docs.python.org/3/library/urllib.error.html)。
 
 ## 结构约定
 
