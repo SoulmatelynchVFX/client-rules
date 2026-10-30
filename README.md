@@ -13,6 +13,7 @@
 | `tests/test_shadowrocket_config.py` | 原生配置的策略、顺序和清单一致性测试 |
 | `tests/test_service_exceptions.py`、`tests/test_bilibili_routing.py` | Lark 与 BiliBili 国际站的最小上游样本分流回归，不是完整客户端引擎 |
 | `tests/test_shopping_routing.py` | 拼多多、苏宁直连与苏宁优先于 Google 关键词的回归 |
+| `tests/test_vipshop_dewu_routing.py` | 唯品会与得物国内主域名直连、后缀边界及国际站不扩展的回归 |
 
 ## 本地验收
 
@@ -26,7 +27,7 @@
 
 ## 规则集来源
 
-应用分类的规则集取自 [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)，该仓库按应用分类并随上游更新，因此这里只维护「哪个应用走哪个分组」这一层逻辑，不自行维护域名明细。
+应用分类的规则集取自 [blackmatrix7/ios_rule_script](https://github.com/blackmatrix7/ios_rule_script)，该仓库按应用分类并随上游更新。本项目主要维护应用与策略映射，也维护少量有依据的本地域名补充和服务例外，覆盖边界见下文。
 
 ## 维护说明
 
@@ -81,6 +82,18 @@ curl -s -o /dev/null -w '%{http_code}\n' \
 同日核对现有 23 个远程集合：其域名规则未覆盖拼多多这 3 个后缀；苏宁的 12 个 `.cn` 后缀已有兜底直连，其余 19 个后缀未被既有远程域名规则直连覆盖。其中 `suningmail.com` 包含 `gmail`，会匹配 [Google 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Google/Google.list) 的 `DOMAIN-KEYWORD,gmail`，因此苏宁集合必须优先；真正的 `gmail.com` 仍走代理。域名覆盖差异不等于旧版所有实际流量都走代理：此前也可能命中国内 IP 兜底。未发现这些后缀与已引用国际集合的其他域名匹配冲突，但此核对不证明所有子域、IP 或共享服务的归属。
 
 验收：导入完整配置、刷新两组远程规则后，打开拼多多和苏宁，检查相关连接记录为 DIRECT；可核对 `pinduoduo.com`、`pddpic.com`、`suning.com`、`suningcdn.com` 等实际出现的域名。若观察到 `suningmail.com`，应优先命中 SuNing / DIRECT；无需为测试登录邮箱或提供私人日志。同时回归 BiliBili 国际站、Lark 及 Gmail 的代理策略。本地测试仅使用最小域名样本，不模拟 DNS/GEOIP/UA 或证明购买、支付等全部业务可用；iPhone 实机验证仍待完成。
+
+### 唯品会与得物国内主域名直连
+
+2026-10-30 实际 GET 核实 [VipShop 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/VipShop/VipShop.list) 返回 200，包含 4 条 DOMAIN-SUFFIX：`appsimg.com`、`appvipshop.com`、`vip.com`、`vipstatic.com`。新增该集合 DIRECT，并手写 `DOMAIN-SUFFIX,dewu.com,DIRECT`；两者位于境外代理集合和兜底之前。
+
+[得物官网](https://www.dewu.com/) 的主站、商家后台及开放平台使用 `dewu.com` 及其子域，官网另将国际卖家入口链接到 `poizon.com`。本批仅补国内主域名，不添加 `poizon.com` 直连，也不猜测其他图片、支付、登录或共享 CDN 域名。DIRECT 是本项目策略，不是官网的网络要求。
+
+同日读取原有 25 个远程集合，按 DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD 核对上述 5 个主域名，未发现已有直接域名匹配；这不等于旧版流量一定走代理，国内 IP 仍可能命中 GEOIP 直连。检查不覆盖全部子域、IP、UA 或复杂规则，也不保证上游未来内容不变。
+
+设备验收：导入完整 `shadowrocket.conf`、选择已有节点、使用“配置”路由并刷新远程规则，确认 VipShop 下载成功。打开唯品会和得物，在连接记录里查看实际出现的目标域名及最终策略：上述唯品会域名应命中 VipShop / DIRECT，`dewu.com` 子域应命中本地 DOMAIN-SUFFIX / DIRECT。若仅命中 GEOIP/CN，不能算新增域名规则验证通过；能打开或速度快慢也不能证明分流正确。没有出现的域名标记为未验证，不为测试登录或下单。
+
+同时回归斗鱼、拼多多、苏宁 DIRECT，以及 BiliBili 国际站和 Lark 专属域名 PROXY。保留旧配置便于切回，无需 HTTPS 解密；反馈只需脱敏后的目标域名、命中规则及策略，不提供完整流量日志。本批离线测试使用最小域名样本，不替代 Shadowrocket 引擎或 iPhone 实测。
 
 ## License
 
