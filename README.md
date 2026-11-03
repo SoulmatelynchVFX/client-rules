@@ -16,6 +16,7 @@
 | `tests/test_service_exceptions.py`、`tests/test_bilibili_routing.py` | Lark 与 BiliBili 国际站的最小上游样本分流回归，不是完整客户端引擎 |
 | `tests/test_shopping_routing.py` | 拼多多、苏宁直连与苏宁优先于 Google 关键词的回归 |
 | `tests/test_vipshop_dewu_routing.py` | 唯品会与得物国内主域名直连、后缀边界及国际站不扩展的回归 |
+| `tests/test_eleme_didi_routing.py` | 饿了么与滴滴主域名直连、原有 .cn 兜底及国际服务不扩展的回归 |
 
 ## 本地验收
 
@@ -128,6 +129,18 @@ python scripts/check_upstream.py --config shadowrocket.conf --workers 4 --timeou
 设备验收：导入完整 `shadowrocket.conf`、选择已有节点、使用“配置”路由并刷新远程规则，确认 VipShop 下载成功。打开唯品会和得物，在连接记录里查看实际出现的目标域名及最终策略：上述唯品会域名应命中 VipShop / DIRECT，`dewu.com` 子域应命中本地 DOMAIN-SUFFIX / DIRECT。若仅命中 GEOIP/CN，不能算新增域名规则验证通过；能打开或速度快慢也不能证明分流正确。没有出现的域名标记为未验证，不为测试登录或下单。
 
 同时回归斗鱼、拼多多、苏宁 DIRECT，以及 BiliBili 国际站和 Lark 专属域名 PROXY。保留旧配置便于切回，无需 HTTPS 解密；反馈只需脱敏后的目标域名、命中规则及策略，不提供完整流量日志。本批离线测试使用最小域名样本，不替代 Shadowrocket 引擎或 iPhone 实测。
+
+### 饿了么与滴滴主域名直连
+
+新增 [Eleme 上游集合](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Eleme/Eleme.list) DIRECT，以及 `DOMAIN-SUFFIX,didichuxing.com,DIRECT`，放在境外代理集合和兜底之前。滴滴的 [官方 MCP 服务](https://mcp.didichuxing.com/) 使用该主域名下的地址；这里的 DIRECT 是本项目策略，不是服务方对网络的要求。
+
+2026-11-03 实际 GET 核对现有 26 个集合和 Eleme、DiDi 两个候选，28 个响应均为 HTTP 200 且通过基本内容检查。Eleme 含 13 个域名后缀；原配置的 `.cn` 兜底已覆盖其中 6 个，另外 7 个（如 `ele.me`、`elemecdn.com`）及 `didichuxing.com` 未被既有域名规则覆盖。包括 Alibaba 在内的现有远程集合，未发现与这些目标的域名规则重叠。此次核对不包含 DNS、IP 或 UA 匹配，因此不能推断旧版实际流量一定走代理。
+
+[DiDi 上游集合](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/DiDi/DiDi.list) 的 25 个后缀还包含 `didi-food.com`、`didiaustralia.blog`、`didimobility.co.jp` 和 `didiglobal.com` 等国际或共享服务。本批采用主域名补充，不将整个集合设为 DIRECT，也不增加上述域名的专属规则；其余服务沿用原有配置。后续按实际使用中出现的域名再扩展，不把本次补充称为滴滴所有业务的完整覆盖。
+
+验收：导入完整 `shadowrocket.conf`，选择已有节点并使用“配置”路由，刷新远程规则并确认 Eleme 下载成功。打开饿了么和滴滴，在连接记录中核对实际出现的 `ele.me`、`elemecdn.com` 等域名命中 Eleme / DIRECT，`didichuxing.com` 子域命中本地 DOMAIN-SUFFIX / DIRECT。没有出现的域名记为未验证；不需要下单、支付或上传完整日志。同时回归 Lark、BiliBili 国际站 PROXY 和原有国内服务 DIRECT。
+
+本地测试包含根域名、子域名、相似域名边界、移除新增规则的对照、优先级及两份清单的一致性。它只回放已核对的域名样本，iPhone 实机验证另行完成。
 
 ## License
 
