@@ -142,6 +142,18 @@ python scripts/check_upstream.py --config shadowrocket.conf --workers 4 --timeou
 
 本地测试包含根域名、子域名、相似域名边界、移除新增规则的对照、优先级及两份清单的一致性。它只回放已核对的域名样本，iPhone 实机验证另行完成。
 
+### 高德与 12306 覆盖核对
+
+2026-11-06 实际 GET 核对原有 27 个远程集合及 [GaoDe](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GaoDe/GaoDe.list)、[12306](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/12306/12306.list) 两个候选，29 个响应均为 HTTP 200 并通过基本规则内容检查。
+
+本批新增 GaoDe 集合 DIRECT，位于境外代理集合和兜底之前。核对时包含 9 个后缀：`a-map.cn`、`a-map.co`、`a-map.link`、`a-map.vip`、`amap.com`、`amapauto.com`、`anav.com`、`autonavi.com`、`gaode.com`。按既有集合的 DOMAIN / DOMAIN-SUFFIX / DOMAIN-KEYWORD 比较，未发现这些主域名的匹配；其中 a-map.cn 已有 .cn 兜底直连，其他 8 个新增明确域名覆盖。没有执行 DNS、IP 或 UA 回放，不能据此断言此前一定走代理；可能已有 GEOIP 国内 IP 直连。
+
+12306 候选含 15 个后缀，9 个 .cn 已有直连兜底，包括 `12306.cn` 及其子域。另 6 个为 `95572.com`、`china-ric.com`、`crct.com`、`nntlj.com`、`peoplerail.com`、`tdpress.com`；没有实机证据证明它们是 12306 App 的必要流量，因此本批**不整组引入 12306 集合、不添加重复的 12306.cn 规则**，其余域名沿用现有策略。此结论不是“12306 全业务已验证”，若实机发现错误分流，再按脱敏连接记录补充。
+
+设备验收：保留旧配置，导入完整 `shadowrocket.conf`，使用已有节点和“配置”路由，刷新远程规则并确认 GaoDe 下载成功。打开高德，在连接记录中核对实际出现的 `amap.com`、`autonavi.com` 等主机命中 GaoDe / DIRECT；12306 的 `12306.cn` 子域应为 DIRECT，可能命中 .cn 或更早的 GEOIP/CN。只看能否打开或速度快慢不能判定策略。未出现的域名记为未验证；不为测试登录、下单或上传完整日志，不需要 HTTPS 解密。
+
+同时回归斗鱼、拼多多、苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放核实的域名样本、后缀边界及顺序，不替代 Shadowrocket 引擎或 iPhone 实测。Apple Relay 仍是独立待验收批次，不在此配置中。
+
 ## License
 
 MIT
