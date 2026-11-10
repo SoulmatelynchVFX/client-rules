@@ -152,7 +152,7 @@ python scripts/check_upstream.py --config shadowrocket.conf --workers 4 --timeou
 
 设备验收：保留旧配置，导入完整 `shadowrocket.conf`，使用已有节点和“配置”路由，刷新远程规则并确认 GaoDe 下载成功。打开高德，在连接记录中核对实际出现的 `amap.com`、`autonavi.com` 等主机命中 GaoDe / DIRECT；12306 的 `12306.cn` 子域应为 DIRECT，可能命中 .cn 或更早的 GEOIP/CN。只看能否打开或速度快慢不能判定策略。未出现的域名记为未验证；不为测试登录、下单或上传完整日志，不需要 HTTPS 解密。
 
-同时回归斗鱼、拼多多、苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放核实的域名样本、后缀边界及顺序，不替代 Shadowrocket 引擎或 iPhone 实测。Apple Relay 仍是独立待验收批次，不在此配置中。
+同时回归斗鱼、拼多多、苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放核实的域名样本、后缀边界及顺序，不替代 Shadowrocket 引擎或 iPhone 实测。Apple Relay 指定主机策略与验收方式见对应章节。
 
 ### 安居客与前程无忧直连
 
@@ -164,7 +164,21 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 验收：保留旧配置，导入完整 shadowrocket.conf，选择已有节点并使用“配置”路由；刷新远程规则，确认 Anjuke 与 51Job 下载成功。打开两款软件，在连接记录中核对实际出现的 anjuke.com/anjukestatic.com 与 51job.com/51jobcdn.com 子域，分别应命中相应集合 / DIRECT。仅能打开或速度变化不足以证明命中，未出现的主机标为未验证；不为验证登录、投递简历、上传个人资料或支付，不需 HTTPS 解密与完整流量日志。
 
-同时回归高德、斗鱼、拼多多与苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放已核对的域名样本、后缀边界与配置顺序；不替代 Shadowrocket 引擎及 iPhone 实机验证。Apple Relay 保持独立候选，本批配置不包含该修改。
+同时回归高德、斗鱼、拼多多与苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放已核对的域名样本、后缀边界与配置顺序；不替代 Shadowrocket 引擎及 iPhone 实机验证。Apple Relay 的指定主机策略见下节。
+
+### Apple 智能扩展与私有云计算：两个指定主机优先代理
+
+两份清单最前面增加精确规则 `DOMAIN,apple-relay.apple.com,PROXY` 和 `DOMAIN,apple-relay.fastly-edge.com,PROXY`，历史清单映射到对应节点策略。仅匹配这两个主机，不包含其子域；已有国内应用分流、OpenAI 集合、DNS、bypass-system 与局域网设置沿用原值。
+
+2026-11-04 核对 [Apple 企业网络文档](https://support.apple.com/en-ie/101555)：前者用于 Apple Intelligence Extensions，后者用于 Private Cloud Compute，均列出 TCP/UDP 443。此处是本项目分流策略，不是完整 Apple 智能服务主机清单或官方地区解锁办法；未添加 HTTPS 解密、共享 IP 段或其他 PCC 主机。
+
+原配置已有 FINAL/PROXY，缺少精确规则不代表此前一定直连；未命中更早规则且遇到 GEOIP/CN/DIRECT 时才可能提前直连。新增规则保证被配置接管并识别为这两个域名的连接优先匹配 PROXY，不保证系统全部流量已被接管。本地测试覆盖精确边界、优先级、条件性 GEOIP 回退及两份清单一致性，不模拟 iOS 地区资格。
+
+“地区不可用”不能据此确定为缓存问题；退出设置等待 15 秒或改代理能否解决尚无设备证据。[OpenAI 设置说明](https://help.openai.com/en/articles/10269382-setting-up-chatgpt-with-apple-intelligence) 仍要求 Apple Intelligence 与 ChatGPT 均满足支持条件。本配置不修改定位、IP 地址跟踪、账户地区或设备语言。
+
+验收：保留旧配置，导入完整 shadowrocket.conf，选择已有节点并使用“配置”路由，保持系统设置不变重新尝试 ChatGPT 扩展。可选择不登录账户进行首次验证，使用不含私人信息的请求。在连接记录中查看实际出现的两个主机是否分别命中 DOMAIN / PROXY；速度或仅命中 FINAL 不能证明新增规则生效，未出现记为未验证。不需要 HTTPS 解密或完整日志。
+
+若命中 PROXY 后仍有地区提示，反馈准确提示、iOS/Shadowrocket 版本、设备与 Siri 语言、Apple 账户地区与当前国家/地区即可；无需账户凭据、订阅地址、精确位置。没有相关记录时先检查配置是否启用及流量接管，不盲目扩大 Apple 规则。回归国内服务 DIRECT 和 Lark、BiliBili 国际站 PROXY，异常可切回旧配置。配置发布不代表已经 iPhone 实测或成功解除地区限制。
 
 ## License
 

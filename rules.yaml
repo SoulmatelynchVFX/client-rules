@@ -3,6 +3,10 @@
 # 本清单的「🔰 选择节点」在原生配置中映射为 PROXY，MATCH 映射为 FINAL。
 
 rules:
+  # Apple 智能扩展 / 私有云计算指定主机；优先代理，不代表地区解锁
+  - DOMAIN,apple-relay.apple.com,🔰 选择节点
+  - DOMAIN,apple-relay.fastly-edge.com,🔰 选择节点
+
   # 国际版 Lark 专属域名例外；必须在 ByteDance 等公司级集合之前
   - DOMAIN-SUFFIX,larksuite.com,🔰 选择节点
   - DOMAIN-SUFFIX,larksuitecdn.com,🔰 选择节点

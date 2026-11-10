@@ -47,7 +47,7 @@ class ShadowrocketConfigTest(unittest.TestCase):
         seen = set()
         for rule in self.rules:
             parts = rule.split(",")
-            self.assertIn(parts[0], {"RULE-SET", "DOMAIN-SUFFIX", "GEOIP", "FINAL"})
+            self.assertIn(parts[0], {"RULE-SET", "DOMAIN", "DOMAIN-SUFFIX", "GEOIP", "FINAL"})
             self.assertEqual(len(parts), 2 if parts[0] == "FINAL" else 3)
             self.assertTrue(all(parts))
             self.assertIn(parts[-1], {"DIRECT", "PROXY"})

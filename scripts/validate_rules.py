@@ -23,7 +23,7 @@ def validate(text):
         parts = [part.strip() for part in line[2:].split(",")]
         kind = parts[0]
         expected = 2 if kind == "MATCH" else 3
-        if kind not in {"RULE-SET", "DOMAIN-SUFFIX", "GEOIP", "MATCH"} or len(parts) != expected or not all(parts):
+        if kind not in {"RULE-SET", "DOMAIN", "DOMAIN-SUFFIX", "GEOIP", "MATCH"} or len(parts) != expected or not all(parts):
             errors.append(f"line {number}: unsupported or malformed rule")
             continue
         key = tuple(parts[:-1])
