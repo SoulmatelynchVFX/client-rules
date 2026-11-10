@@ -33,6 +33,9 @@ rules:
   - DOMAIN-SUFFIX,didichuxing.com,DIRECT
   # 高德直连；12306.cn 已由 .cn 规则直连，不扩展整组铁路关联域名
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/GaoDe/GaoDe.list,DIRECT
+  # 安居客与前程无忧直连
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anjuke/Anjuke.list,DIRECT
+  - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/51Job/51Job.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/MeiTuan/MeiTuan.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Weibo/Weibo.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/XiaoHongShu/XiaoHongShu.list,DIRECT

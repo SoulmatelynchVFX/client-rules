@@ -154,6 +154,18 @@ python scripts/check_upstream.py --config shadowrocket.conf --workers 4 --timeou
 
 同时回归斗鱼、拼多多、苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放核实的域名样本、后缀边界及顺序，不替代 Shadowrocket 引擎或 iPhone 实测。Apple Relay 仍是独立待验收批次，不在此配置中。
 
+### 安居客与前程无忧直连
+
+新增 [Anjuke](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anjuke/Anjuke.list) 与 [51Job](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/51Job/51Job.list) 两组 DIRECT，放在境外代理集合与兜底之前。2026-11-10 实际 GET：Anjuke 含 7 条、51Job 含 19 条，均为 DOMAIN-SUFFIX；两组是按上游应用分类引入，不代表每个关联域名的归属、业务或实机行为都经过独立验证。
+
+同日核对原有 28 个集合及两个候选，30 个均 HTTP 200、基本规则内容检查通过。按原有集合 DOMAIN / DOMAIN-SUFFIX / DOMAIN-KEYWORD 比较候选的 26 个主域名，未发现已有匹配，包括境外代理集合；其中 5 个 .cn 后缀已有直连兜底，另外 21 个补充明确域名覆盖。未检查全部子域、DNS、IP 或 UA，不能据此认定旧配置流量一定走代理；仍可能原本命中 GEOIP/CN 直连。上游 master 内容可能变化。
+
+Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包含 51job.com、51jobcdn.com、yingjiesheng.com 等及上游列出的关联服务。本批不扩大到整个 58、IBM 等公司域名，也不按名称猜测未列出的登录、招聘或共享 CDN；遇到国际/共享服务疑似错误分流，应依据实际连接记录逐项调整，不能宣称这两款 App 全业务均已验证。
+
+验收：保留旧配置，导入完整 shadowrocket.conf，选择已有节点并使用“配置”路由；刷新远程规则，确认 Anjuke 与 51Job 下载成功。打开两款软件，在连接记录中核对实际出现的 anjuke.com/anjukestatic.com 与 51job.com/51jobcdn.com 子域，分别应命中相应集合 / DIRECT。仅能打开或速度变化不足以证明命中，未出现的主机标为未验证；不为验证登录、投递简历、上传个人资料或支付，不需 HTTPS 解密与完整流量日志。
+
+同时回归高德、斗鱼、拼多多与苏宁 DIRECT，以及 Lark、BiliBili 国际站 PROXY。离线测试仅回放已核对的域名样本、后缀边界与配置顺序；不替代 Shadowrocket 引擎及 iPhone 实机验证。Apple Relay 保持独立候选，本批配置不包含该修改。
+
 ## License
 
 MIT
