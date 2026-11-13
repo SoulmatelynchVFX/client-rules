@@ -11,6 +11,18 @@ rules:
   - DOMAIN-SUFFIX,larksuite.com,🔰 选择节点
   - DOMAIN-SUFFIX,larksuitecdn.com,🔰 选择节点
 
+  # 爱奇艺国际版与 WeTV 的域名规则优先于国内视频直连
+  - DOMAIN-SUFFIX,iq.com,🔰 选择节点
+  - DOMAIN-SUFFIX,inter.iqiyi.com,🔰 选择节点
+  - DOMAIN-SUFFIX,intl-rcd.iqiyi.com,🔰 选择节点
+  - DOMAIN-SUFFIX,intl-subscription.iqiyi.com,🔰 选择节点
+  - DOMAIN-SUFFIX,intl.iqiyi.com,🔰 选择节点
+  - DOMAIN,cache.video.iqiyi.com,🔰 选择节点
+  - DOMAIN,wetv.qq.com,🔰 选择节点
+  - DOMAIN-SUFFIX,vv.video.qq.com,🔰 选择节点
+  - DOMAIN-SUFFIX,wetv.vip,🔰 选择节点
+  - DOMAIN-SUFFIX,wetvinfo.com,🔰 选择节点
+
   # BiliBili 国际站例外；必须在国内 BiliBili 等直连集合之前
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BiliBiliIntl/BiliBiliIntl.list,🔰 选择节点
 
@@ -40,6 +52,12 @@ rules:
   # 安居客与前程无忧直连
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Anjuke/Anjuke.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/51Job/51Job.list,DIRECT
+  # 腾讯视频、爱奇艺国内域名直连
+  - DOMAIN-SUFFIX,v.qq.com,DIRECT
+  - DOMAIN-SUFFIX,video.qq.com,DIRECT
+  - DOMAIN-SUFFIX,qqvideo.gtimg.com,DIRECT
+  - DOMAIN-SUFFIX,iqiyi.com,DIRECT
+  - DOMAIN-SUFFIX,qiyi.com,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/MeiTuan/MeiTuan.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Weibo/Weibo.list,DIRECT
   - RULE-SET,https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/XiaoHongShu/XiaoHongShu.list,DIRECT

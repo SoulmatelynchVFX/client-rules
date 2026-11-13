@@ -180,6 +180,14 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 若命中 PROXY 后仍有地区提示，反馈准确提示、iOS/Shadowrocket 版本、设备与 Siri 语言、Apple 账户地区与当前国家/地区即可；无需账户凭据、订阅地址、精确位置。没有相关记录时先检查配置是否启用及流量接管，不盲目扩大 Apple 规则。回归国内服务 DIRECT 和 Lark、BiliBili 国际站 PROXY，异常可切回旧配置。配置发布不代表已经 iPhone 实测或成功解除地区限制。
 
+### 腾讯视频与爱奇艺分流
+
+国内视频相关域名 `v.qq.com`、`video.qq.com`、`qqvideo.gtimg.com`、`iqiyi.com` 和 `qiyi.com` 使用 DIRECT。爱奇艺国际版 `iq.com` 及上游标出的部分 `iqiyi.com` 主机、WeTV 的 `wetv.vip`、`wetvinfo.com`、`wetv.qq.com` 和 `vv.video.qq.com` 优先使用 PROXY。
+
+2026-11-13 GET 核对 [TencentVideo](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/TencentVideo/TencentVideo.list)、[iQIYI](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/iQIYI/iQIYI.list)、[iQIYIIntl](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/iQIYIIntl/iQIYIIntl.list) 和 [WeTV](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/WeTV/WeTV.list)。国内 iQIYI 集合也包含 `iq.com`，而 TencentVideo 的 `video.qq.com` 后缀覆盖 WeTV 的 `vv.video.qq.com`。本配置使用已核对的本地域名规则，避免整组引入涉及两版的 IP、UA 或宽泛关键词。`iqiyipic.com` 同时被 [爱奇艺国际站](https://www.iq.com/) 使用，继续按既有规则分流。
+
+设备验收时导入完整 `shadowrocket.conf`，选择可用节点并启用“配置”路由。检查实际连接记录中的域名、命中规则和策略。国内可看 `v.qq.com` 与 `www.iqiyi.com` 的 DIRECT，国际可看 `www.iq.com`、`wetv.vip` 或实际出现的 `vv.video.qq.com` 的 PROXY。各端实际使用的播放、登录和共享 CDN 域名仍需设备验证。
+
 ## License
 
 MIT
