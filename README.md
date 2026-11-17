@@ -188,6 +188,14 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 设备验收时导入完整 `shadowrocket.conf`，选择可用节点并启用“配置”路由。检查实际连接记录中的域名、命中规则和策略。国内可看 `v.qq.com` 与 `www.iqiyi.com` 的 DIRECT，国际可看 `www.iq.com`、`wetv.vip` 或实际出现的 `vv.video.qq.com` 的 PROXY。各端实际使用的播放、登录和共享 CDN 域名仍需设备验证。
 
+### 优酷与咪咕视频主域名直连
+
+`youku.com` 和 `miguvideo.com` 及其子域新增 DIRECT。2026-11-17 核对的 30 个现有远程集合均未显式匹配这两个主域名及抽样子域。`cmvideo.cn`、`migu.cn` 和 `youku.com.cn` 已有 `.cn` 直连兜底。国内入口见 [优酷](https://www.youku.com/) 与 [咪咕视频](https://www.miguvideo.com/)。
+
+实际 GET 核对的 [Youku 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Youku/Youku.list) 包含 `ykimg.com`、UA 和 IP 范围。[优酷国际站](https://www.youku.tv/) 也请求 `m.ykimg.com`。此次只补已核对的主域名，国际站 `youku.tv`、共享 CDN 及其余关联域名沿用原策略。[Migu 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Migu/Migu.list) 列有三个域名后缀和两条 UA 规则。
+
+设备验收时保留旧配置，导入完整 `shadowrocket.conf`，选择已有节点并启用“配置”路由。打开国内站点或应用，在连接记录里核对实际出现的 `www.youku.com`、`v.youku.com`、`www.miguvideo.com` 是否命中对应域名规则与 DIRECT。其他播放、登录和 CDN 主机的实际路由需另行验证。
+
 ## License
 
 MIT
