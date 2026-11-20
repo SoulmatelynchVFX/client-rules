@@ -196,6 +196,14 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 设备验收时保留旧配置，导入完整 `shadowrocket.conf`，选择已有节点并启用“配置”路由。打开国内站点或应用，在连接记录里核对实际出现的 `www.youku.com`、`v.youku.com`、`www.miguvideo.com` 是否命中对应域名规则与 DIRECT。其他播放、登录和 CDN 主机的实际路由需另行验证。
 
+### 网易云音乐与酷狗主域直连
+
+`music.163.com`、`music.126.net`、`music.126.com` 和 `kugou.com` 及其子域使用 DIRECT。2026-11-20 实际 GET 核对现有 30 个远程集合，均通过内容校验，其精确域名、后缀和关键词规则未匹配上述域名及抽样子域。国内 IP 仍可能匹配原 GEOIP 直连，实际命中需查看设备记录。
+
+[NetEaseMusic 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/NetEaseMusic/NetEaseMusic.list) 含 30 条规则，三个 music 域名之外还列有其他关联域名、UA 和 IP；[KugouKuwo 上游](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/KugouKuwo/KugouKuwo.list) 含 109 条，包含酷狗、酷我及其他域名和 IP。本批采用上述四条本地域名规则。酷我 `kuwo.cn` 及子域已有 `.cn` 直连，其他酷我/酷狗域名留待实际连接证据核查。
+
+设备验收时保留旧配置，导入完整 `shadowrocket.conf`，选择已有节点并使用“配置”路由。打开网易云音乐和酷狗，核对实际出现的 `interface.music.163.com`、`music.126.net`、`www.kugou.com` 等是否命中本地 DOMAIN-SUFFIX / DIRECT。查看酷我时 `kuwo.cn` 子域应为 DIRECT。未出现的目标主机记为未验证。
+
 ## License
 
 MIT
