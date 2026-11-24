@@ -204,6 +204,14 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 设备验收时保留旧配置，导入完整 `shadowrocket.conf`，选择已有节点并使用“配置”路由。打开网易云音乐和酷狗，核对实际出现的 `interface.music.163.com`、`music.126.net`、`www.kugou.com` 等是否命中本地 DOMAIN-SUFFIX / DIRECT。查看酷我时 `kuwo.cn` 子域应为 DIRECT。未出现的目标主机记为未验证。
 
+### 知乎与豆瓣域名直连
+
+`zhihu.com`、`zhimg.com`、`douban.com`、`douban.fm`、`doubanio.com` 及子域使用 DIRECT，置于 GEOIP 和最终兜底之前。2026-11-24 实际 GET 核对 [Zhihu](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Zhihu/Zhihu.list)（7 条）与 [DouBan](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/DouBan/DouBan.list)（3 条）上游，采用其中两条及三条域名后缀，不引入知乎集合的五条 IP 规则。
+
+同日核对 30 个现有远程集合均 HTTP 200、内容检查通过；其 DOMAIN、DOMAIN-SUFFIX、DOMAIN-KEYWORD 规则未匹配上述五个主域名及每个主域下的两个抽样子域。此检查不回放 DNS、IP 或 UA，也不证明此前一定走代理，原 GEOIP/CN 仍可能直连。新增规则不识别所有 App 流量，不保证所有功能已经覆盖或豆瓣 FM 当前业务可用。
+
+保留旧配置，导入完整 shadowrocket.conf，选择已有节点、启用“配置”路由。打开知乎或豆瓣，查看实际出现的 www.zhihu.com、知乎图片的 zhimg.com 子域、www.douban.com、豆瓣资源的 doubanio.com 子域是否命中对应 DOMAIN-SUFFIX / DIRECT。douban.fm 若实际出现也应 DIRECT，未出现记为未验证。域名样本仅供核对，不宣称每个 App 一定请求这些主机。保持国际站与已有国内应用回归，只反馈目标域名、命中规则、策略；无需 HTTPS 解密或全量流量日志。静态回归与 iPhone 实测分开记录。
+
 ## License
 
 MIT
