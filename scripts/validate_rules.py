@@ -27,6 +27,8 @@ def validate(text):
             errors.append(f"line {number}: unsupported or malformed rule")
             continue
         key = tuple(parts[:-1])
+        if kind in {"DOMAIN", "DOMAIN-SUFFIX"}:
+            key = (kind, parts[1].lower())
         if key in seen:
             errors.append(f"line {number}: duplicate matcher (possibly conflicting policy)")
         seen.add(key)

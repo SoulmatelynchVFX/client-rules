@@ -34,6 +34,15 @@ class ValidateRulesTest(unittest.TestCase):
     def test_duplicate_matcher_with_different_policy(self):
         self.assertTrue(validate("rules:\n  - GEOIP,CN,DIRECT\n  - GEOIP,CN,Proxy\n  - MATCH,Proxy"))
 
+    def test_domain_matchers_are_case_insensitive(self):
+        for kind in ("DOMAIN", "DOMAIN-SUFFIX"):
+            with self.subTest(kind=kind):
+                rules = (f"rules:\n  - {kind},EXAMPLE.COM,DIRECT\n"
+                         f"  - {kind},example.com,Proxy\n  - MATCH,Proxy")
+                self.assertEqual(validate(rules), ["line 3: duplicate matcher (possibly conflicting policy)"])
+        self.assertEqual(validate("rules:\n  - DOMAIN,EXAMPLE.COM,DIRECT\n"
+                                  "  - DOMAIN-SUFFIX,example.com,Proxy\n  - MATCH,Proxy"), [])
+
     def test_remote_url_shape(self):
         for url in ["http://example.com/a.list", "https:///a.list", "https://example.com/a.yaml"]:
             with self.subTest(url=url):
