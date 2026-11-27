@@ -212,6 +212,14 @@ Anjuke 当前包含 anjuke.com、anjukestatic.com、aifcdn.com 等；51Job 包�
 
 保留旧配置，导入完整 shadowrocket.conf，选择已有节点、启用“配置”路由。打开知乎或豆瓣，查看实际出现的 www.zhihu.com、知乎图片的 zhimg.com 子域、www.douban.com、豆瓣资源的 doubanio.com 子域是否命中对应 DOMAIN-SUFFIX / DIRECT。douban.fm 若实际出现也应 DIRECT，未出现记为未验证。域名样本仅供核对，不宣称每个 App 一定请求这些主机。保持国际站与已有国内应用回归，只反馈目标域名、命中规则、策略；无需 HTTPS 解密或全量流量日志。静态回归与 iPhone 实测分开记录。
 
+### 虎扑直连与贴吧既有覆盖
+
+`hupu.com`、`hupucdn.com` 及子域新增 DIRECT。2026-11-27 实际 GET 核对 [Hupu](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/Hupu/Hupu.list)（12 条域名后缀）及当前 30 个引用集合，现有集合的域名/后缀/关键词未匹配这两个主域和抽样子域；GEOIP 仍可能使此前流量直连。本次只补上述主域及资源域，不整组引入其他关联站点；其他域名保持原策略，不代表虎扑所有业务均已覆盖。
+
+同日检查 [BaiDuTieBa](https://raw.githubusercontent.com/blackmatrix7/ios_rule_script/master/rule/Shadowrocket/BaiDuTieBa/BaiDuTieBa.list) 的 32 条规则（31 条精确域名和 1 条后缀），均被现有 Baidu 集合的 baidu.com、baidustatic.com、bdimg.com、bdstatic.com、bcebos.com 后缀覆盖。贴吧继续使用已有 Baidu / DIRECT，无需新增重复规则集或 tieba.baidu.com 本地规则。此为当日上游内容比较，不替代实机验证；master 内容可能变化。
+
+导入完整 shadowrocket.conf 后，选择已有节点并使用“配置”路由。在虎扑连接记录中检查实际出现的 hupu.com / hupucdn.com 子域是否命中 DOMAIN-SUFFIX / DIRECT；贴吧实际出现的 tieba.baidu.com、tiebapic.baidu.com 等应命中 Baidu / DIRECT。仅打开成功或速度变化不能证明命中，未出现的记为未验证。回归知乎、豆瓣直连和已有国际服务代理，反馈仅需目标域名、命中规则、策略，无需解密或完整日志。
+
 ## License
 
 MIT
